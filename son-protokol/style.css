@@ -7,3 +7,13 @@
 
 /* Tamamen kurgusal GPU ısınma ve sahte veri kaybı animasyonları. */
 .mock-gpu{margin:14px 0 18px;border:1px solid #6277b5;padding:12px;background:#19244d}.mock-gpu>span,.mock-gpu>strong{font:700 10px/1.6 var(--mono);color:#d3dfff}.mock-gpu>strong{float:right;color:#ff9e9e}.mock-gpu-bar{clear:both;height:7px;background:#344477;margin-top:10px}.mock-gpu-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffde70,#ff6c62);animation:gpu-rise 2.2s .2s ease-out forwards}.mock-crash-files span{animation:fake-erase .45s both}.mock-crash-files span:nth-child(1){animation-delay:.35s}.mock-crash-files span:nth-child(2){animation-delay:1s}.mock-crash-files span:nth-child(3){animation-delay:1.65s}@keyframes gpu-rise{0%{width:7%}100%{width:99%}}@keyframes fake-erase{0%{opacity:1;color:#dce5ff}65%{opacity:.32}100%{opacity:1;color:#ffb5b5;text-decoration:line-through}}
+
+/* v2.1: avoid decorative elements pushing narrow displays horizontally. */
+html { overflow-x: clip; }
+@media (max-width: 480px) {
+  .welcome-main { min-width: 0; overflow: clip; }
+  .welcome h1 { font-size: clamp(49px, 14vw, 66px); }
+  .eye { left: auto; right: -4px; top: 4px; width: 175px; height: 175px; opacity: .28; }
+  .eye-reticle { width: 195px; }
+  .eye-core { font-size: 92px; }
+}
