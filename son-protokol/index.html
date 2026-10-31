@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b0d">
+  <meta name="description" content="SON PROTOKOL: Tarayıcıda oynanan, gerçek dosyalara dokunmayan gerilim ve şifre bulmaca oyunu.">
+  <title>SON PROTOKOL — 03:00</title>
+  <style>
+    :root{--bg:#080a0d;--panel:#11151a;--panel2:#151a20;--line:#2a3037;--pale:#e6e8e6;--muted:#8e979c;--red:#f3464e;--red2:#9e262e;--amber:#f9c477;--green:#70d7b1;--mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;--sans:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    *{box-sizing:border-box}[hidden]{display:none!important}html,body{min-height:100%;margin:0}body{font-family:var(--sans);background:var(--bg);color:var(--pale);overflow-x:hidden}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.48;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #f0c3c5;outline-offset:3px}a{color:inherit}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 51% 0,rgba(164,35,44,.16),transparent 45%),radial-gradient(circle at 90% 80%,rgba(255,255,255,.025),transparent 35%);z-index:0}
+    .noise{pointer-events:none;position:fixed;inset:0;opacity:.13;z-index:9;background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,rgba(255,255,255,.06) 4px,transparent 5px)}
+    .shell{position:relative;z-index:1;max-width:1360px;margin:auto;padding:26px clamp(16px,4vw,52px) 44px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:21px}.brand{display:flex;align-items:center;gap:12px}.brand-icon{width:35px;height:35px;border:1px solid var(--red);border-radius:50%;display:grid;place-items:center;color:var(--red);font:800 22px var(--mono);box-shadow:0 0 21px #f3464e29}.brand-lines strong{font:800 14px var(--mono);letter-spacing:.22em}.brand-lines small{display:block;font:10px var(--mono);color:var(--muted);letter-spacing:.18em;margin-top:6px}.top-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}.status{font:11px var(--mono);color:var(--green);letter-spacing:.1em;margin-right:10px}.status:before{content:"";display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-right:9px;box-shadow:0 0 9px var(--green)}.pill-btn{background:#14191d;border:1px solid #333a40;color:#d4d9da;border-radius:8px;padding:10px 12px;font-size:12px;font-family:var(--mono)}.pill-btn:hover{border-color:#ba5358;color:white}.pill-btn.exit{color:#ff9c9d}
+    .hero{display:flex;align-items:end;justify-content:space-between;gap:26px;padding:50px 0 34px}.eyebrow{font:12px var(--mono);color:var(--red);letter-spacing:.22em;margin:0 0 17px}.hero h1{font-size:clamp(42px,7.8vw,96px);font-weight:900;letter-spacing:-.075em;line-height:.89;margin:0;text-shadow:0 3px 25px #0006}.hero h1 span{color:var(--red)}.hero .sub{font-size:14px;color:#a4a9aa;margin:22px 0 0;max-width:570px;line-height:1.65}.timer-wrap{min-width:240px;text-align:right}.timer-wrap .kicker,.progress-caption{font:11px var(--mono);letter-spacing:.17em;color:var(--muted)}.timer{font:700 clamp(52px,6.8vw,87px)/1 var(--mono);letter-spacing:-.08em;margin:10px 0;color:#f1e7e5;transition:color .3s}.timer.danger{color:var(--red);text-shadow:0 0 30px #f3464e55;animation:flash 1s steps(2,end) infinite}@keyframes flash{50%{opacity:.6}}.progress-track{height:4px;background:#313438;border-radius:100px;overflow:hidden;margin-top:10px}.progress-fill{height:100%;width:100%;background:var(--red);transition:width .3s ease}.integrity{font:11px var(--mono);color:var(--muted);margin-top:10px}
+    .grid{display:grid;grid-template-columns:minmax(0,1.13fr) minmax(0,.87fr);gap:18px}.panel{background:linear-gradient(165deg,#161b20,#0e1216);border:1px solid #2b3237;border-radius:12px;overflow:hidden;box-shadow:0 19px 55px rgba(0,0,0,.22)}.panel-head{min-height:55px;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:10px}.panel-label{font:700 12px var(--mono);letter-spacing:.12em;display:flex;align-items:center;gap:10px}.panel-label i{width:9px;height:9px;border:1px solid var(--red);transform:rotate(45deg)}.panel-meta{color:var(--muted);font:10px var(--mono)}
+    .explorer{padding:19px}.section-tiny{font:11px var(--mono);color:var(--muted);margin:0 0 13px;letter-spacing:.09em}.filelist{display:grid;gap:10px}.file{display:flex;align-items:center;gap:14px;width:100%;text-align:left;border:1px solid #30383d;background:#151b20;color:var(--pale);padding:14px;border-radius:8px;transition:border-color .15s,background .15s}.file:hover,.file.selected{border-color:#b8454c;background:#251a1e}.file .file-mark{flex:0 0 42px;height:42px;border:1px solid #624047;background:#2e1c21;border-radius:8px;display:grid;place-items:center;color:#f16c74;font:700 13px var(--mono)}.file .file-main{flex:1;min-width:0}.file .file-name{font:700 12px var(--mono);overflow-wrap:anywhere}.file .file-desc{font-size:11px;color:var(--muted);margin-top:7px}.file .file-state{font:10px var(--mono);color:var(--muted);text-align:right}.file.visited .file-state{color:var(--green)}
+    .readme{border:1px solid #313941;border-radius:9px;margin-top:18px;overflow:hidden;background:#0a0d11}.readme-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#192027;border-bottom:1px solid #32383c;gap:12px}.readme-bar span{font:11px var(--mono);color:#abb8bc;overflow-wrap:anywhere}.readme-content{min-height:143px;padding:19px 16px 10px;font:12px/1.8 var(--mono);white-space:pre-line;color:#d6dee0;overflow-wrap:anywhere}.readme-content em{font-style:normal;color:var(--red)}.hint-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 14px 14px}.hint-row p{font:10px var(--mono);line-height:1.5;color:var(--muted);margin:0}.tiny-btn{padding:9px 11px;border:1px solid #4c3f3e;background:#2b2223;color:#ffb4aa;border-radius:6px;font:11px var(--mono)}.tiny-btn:hover{background:#473034}
+    .vault{padding:19px 22px 22px}.vault-art{height:100px;border:1px solid #363136;border-radius:9px;background:radial-gradient(ellipse at 50% 100%,#562126,transparent 65%),repeating-linear-gradient(90deg,#141419,#141419 30px,#19171c 31px);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}.vault-art:before,.vault-art:after{content:"";width:70px;height:70px;position:absolute;border:1px solid #a43b43;border-radius:50%;opacity:.55}.vault-art:after{width:43px;height:43px;border-style:dashed;animation:spin 30s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.vault-art b{font:700 23px var(--mono);letter-spacing:.3em;color:#e7a1a1;text-shadow:0 0 17px #ff5b687d}.vault h2{font-size:19px;letter-spacing:.01em;margin:22px 0 6px}.vault p{font-size:12px;color:var(--muted);line-height:1.7;margin:0 0 17px}.input-group{display:flex;gap:10px}.code-input{background:#07090d;border:1px solid #654148;color:white;border-radius:8px;font:700 26px var(--mono);text-align:center;letter-spacing:.4em;min-width:0;width:100%;padding:15px 9px}.submit{border:0;background:var(--red);color:#200809;font:800 12px var(--mono);letter-spacing:.07em;border-radius:8px;padding:0 21px;white-space:nowrap}.submit:hover{background:#ff7379}.digits{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}.digit{background:#1a2126;border:1px solid #364149;color:#dde1e1;border-radius:8px;padding:12px 0;font:700 17px var(--mono);transition:.15s}.digit:hover{background:#30272a;border-color:var(--red)}.digit.alt{font-size:12px;color:#ea9b9c}.footnote{border-top:1px solid var(--line);padding-top:13px;color:#9ca6a8;font:10px/1.6 var(--mono)}
+    .footgrid{display:grid;grid-template-columns:1.13fr .87fr;gap:18px;margin-top:18px}.logbox,.safetybox{padding:17px 19px}.logbox h3,.safetybox h3{margin:0 0 11px;font:700 11px var(--mono);letter-spacing:.16em;color:#c4d1d4}.logs{height:105px;overflow:auto;scrollbar-color:#76363b #121519;font:11px/1.75 var(--mono);color:#aeb9bc}.logs div:before{content:"> ";color:var(--red)}.safetybox p{margin:0;color:#91a0a4;line-height:1.7;font-size:11px}.safetybox strong{color:#b8dbcc}.footer{padding-top:21px;display:flex;justify-content:space-between;gap:20px;color:#687379;font:10px var(--mono)}
+    .overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(3,4,6,.91);backdrop-filter:blur(8px);padding:17px;overflow:auto}.overlay.hidden{display:none}.intro-card{width:min(530px,100%);border:1px solid #603039;border-radius:14px;background:radial-gradient(ellipse at top,#2b131b,#101418 57%);padding:clamp(24px,5vw,42px);text-align:center;box-shadow:0 0 100px #ba23291a,0 22px 75px #000d}.signal{font:13px var(--mono);color:#ef9a9a;letter-spacing:.3em}.spiral{width:102px;height:102px;border-radius:50%;border:3px solid #ca3e4c;margin:19px auto 23px;display:grid;place-items:center;position:relative;box-shadow:0 0 30px #ed3a4a27}.spiral:before{content:"";width:66px;height:66px;border:2px dashed #ef6168;border-radius:50%;position:absolute;animation:spin 20s linear infinite}.spiral:after{content:"";width:25px;height:25px;border:4px solid #e8515a;border-left-color:transparent;border-radius:50%;position:absolute}.spiral span{font:800 23px var(--mono);color:#ffb1b1}.intro-card h2{font-weight:900;font-size:clamp(31px,6vw,42px);letter-spacing:-.05em;margin:0 0 14px}.intro-card .lead{font-size:14px;color:#c2babc;line-height:1.75;margin:0 auto 18px;max-width:410px}.notice{padding:13px 15px;border:1px solid #4b4447;color:#bbb5b7;border-radius:8px;font-size:11px;line-height:1.65;text-align:left;margin:23px 0}.notice b{color:#e6d1d1}.options-row{display:flex;gap:10px;align-items:center;justify-content:center;margin:20px 0}.options-row label{font:11px var(--mono);color:#ccc}.options-row select{background:#111519;color:white;border:1px solid #494044;border-radius:6px;padding:8px}.start{width:100%;background:var(--red);color:#18070b;border:0;border-radius:8px;padding:16px 18px;text-transform:uppercase;font:800 13px var(--mono);letter-spacing:.18em}.start:hover{background:#ff7a80}.secondary{border:1px solid #5b3b41;background:transparent;color:#f4c4c4;padding:13px 19px;border-radius:8px;font:700 12px var(--mono);margin-top:12px}.minor{font:10px/1.5 var(--mono);color:#908b91;margin:14px 0 0}.win .spiral{border-color:var(--green);box-shadow:0 0 33px #70d7b134}.win .spiral:before{border-color:var(--green)}.win .spiral:after{border-color:var(--green)}.win .spiral span{color:var(--green)}.glitch{animation:shake .2s linear 3}@keyframes shake{0%{transform:translateX(2px)}40%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+    .screenreader{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+    @media(max-width:850px){.hero{align-items:stretch;flex-direction:column;padding:35px 0 23px}.timer-wrap{text-align:left;display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:18px;min-width:0}.timer-wrap .kicker{grid-column:1/-1}.timer{font-size:65px}.progress-caption,.progress-track,.integrity{grid-column:2}.progress-caption{align-self:end;margin-top:8px}.progress-track{margin:7px 0 0}.integrity{margin:4px 0}.grid,.footgrid{grid-template-columns:1fr}.vault{padding:17px}.vault-art{height:85px}}
+    @media(max-width:570px){.shell{padding:16px 14px 28px}.brand-lines strong{font-size:11px}.brand-lines small{font-size:8px}.brand-icon{width:29px;height:29px;font-size:18px}.topbar{align-items:flex-start}.top-actions{gap:5px}.status{font-size:9px;width:100%;text-align:right;margin:0}.pill-btn{font-size:10px;padding:9px}.hero h1{font-size:51px}.hero .sub{font-size:12px}.hero{padding-top:35px}.timer{font-size:56px}.file{gap:8px;padding:11px}.file .file-mark{flex-basis:36px;height:36px}.file .file-name{font-size:11px}.file .file-desc{font-size:10px}.panel-head{padding:14px}.explorer{padding:12px}.readme-content{font-size:11px}.input-group{gap:7px}.submit{padding:0 12px;font-size:11px}.code-input{letter-spacing:.25em;font-size:24px}.footer{flex-wrap:wrap}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <main class="shell" id="main">
+    <header class="topbar">
+      <div class="brand"><div class="brand-icon" aria-hidden="true">⌁</div><div class="brand-lines"><strong>SON PROTOKOL</strong><small>HAYATTA KALMA SİMÜLASYONU</small></div></div>
+      <div class="top-actions"><span class="status" id="statusText">SİMÜLASYON HAZIR</span><button class="pill-btn" id="audioBtn" type="button" aria-pressed="true">🔊 SES AÇIK</button><button class="pill-btn exit" id="exitBtn" type="button">✕ ÇIKIŞ (ESC)</button></div>
+    </header>
+    <section class="hero" aria-label="Süre ve görev">
+      <div><p class="eyebrow">◉ DENEME 001 / SİSTEM KARANTİNADA</p><h1>OYUN<br><span>BAŞLADI.</span></h1><p class="sub">Dört dosya. Dört ipucu. Tek bir şifre. Zaman dolmadan kasayı aç; yanlış denemelerin süreye mal olur.</p></div>
+      <div class="timer-wrap"><div class="kicker">KALAN SÜRE</div><div class="timer" id="timer" aria-live="off">03:00</div><div class="progress-caption">SİSTEM BÜTÜNLÜĞÜ</div><div class="progress-track"><div class="progress-fill" id="progress" role="progressbar" aria-label="Simüle edilen sistem bütünlüğü" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"></div></div><div class="integrity" id="integrity">%100 — KARANTİNADA</div></div>
+    </section>
+    <section class="grid" aria-label="Oyun alanı">
+      <div class="panel"><div class="panel-head"><div class="panel-label"><i aria-hidden="true"></i> ŞÜPHELİ DOSYALAR</div><span class="panel-meta">/SIMULATION/CASE_001</span></div>
+        <div class="explorer"><p class="section-tiny">İPUÇLARINI BULMAK İÇİN DOSYALARI AÇ</p><div class="filelist" id="files">
+          <button class="file" type="button" data-file="0"><span class="file-mark">01</span><span class="file-main"><span class="file-name">01_BOOT.LOG</span><div class="file-desc">Açılış günlüğü</div></span><span class="file-state">KİLİTLİ</span></button>
+          <button class="file" type="button" data-file="1"><span class="file-mark">02</span><span class="file-main"><span class="file-name">02_MEMORY.BIN</span><div class="file-desc">Bozuk bellek parçası</div></span><span class="file-state">KİLİTLİ</span></button>
+          <button class="file" type="button" data-file="2"><span class="file-mark">03</span><span class="file-main"><span class="file-name">03_CAMERA.TXT</span><div class="file-desc">Güvenlik kaydı</div></span><span class="file-state">KİLİTLİ</span></button>
+          <button class="file" type="button" data-file="3"><span class="file-mark">04</span><span class="file-main"><span class="file-name">04_EXIT.KEY</span><div class="file-desc">Çıkış anahtarı</div></span><span class="file-state">KİLİTLİ</span></button>
+        </div>
+        <div class="readme"><div class="readme-bar"><span id="fileTitle">> DOSYA SEÇİLMEDİ</span><span>SADECE OKUNUR</span></div><div class="readme-content" id="fileContent">Bir dosyaya dokun. İpuçları burada görünecek.
+
+Dört sayıyı dosya sırasına göre birleştir.</div><div class="hint-row"><p id="hintStatus">İpucu yardımı: −15 saniye</p><button class="tiny-btn" id="hintBtn" type="button" disabled>İPUCU AL</button></div></div></div>
+      </div>
+      <div class="panel"><div class="panel-head"><div class="panel-label"><i aria-hidden="true"></i> ŞİFRE TERMİNALİ</div><span class="panel-meta">ERİŞİM REDDEDİLDİ</span></div>
+        <div class="vault"><div class="vault-art" aria-hidden="true"><b>••••</b></div><h2>SON KİLİT</h2><p>İpuçlarından bulduğun dört rakamı sırayla gir. Yanlış şifre: <b style="color:var(--red)">−12 saniye.</b></p><form id="codeForm" autocomplete="off"><label for="codeInput" class="screenreader">Dört haneli şifre</label><div class="input-group"><input id="codeInput" class="code-input" type="text" maxlength="4" inputmode="numeric" pattern="[0-9]{4}" placeholder="••••" aria-label="4 haneli şifre" spellcheck="false"><button class="submit" type="submit">KİLİDİ AÇ</button></div></form><div class="digits" id="digits"><button class="digit" type="button" data-key="1">1</button><button class="digit" type="button" data-key="2">2</button><button class="digit" type="button" data-key="3">3</button><button class="digit" type="button" data-key="4">4</button><button class="digit" type="button" data-key="5">5</button><button class="digit" type="button" data-key="6">6</button><button class="digit" type="button" data-key="7">7</button><button class="digit" type="button" data-key="8">8</button><button class="digit" type="button" data-key="9">9</button><button class="digit alt" type="button" data-key="clear">SİL</button><button class="digit" type="button" data-key="0">0</button><button class="digit alt" type="button" data-key="back">⌫</button></div><div class="footnote">[ ! ] Her yanlış deneme saati ileri alır. Gerçek dosyalarına hiçbir şey olmaz.</div></div>
+      </div>
+    </section>
+    <section class="footgrid"><div class="panel logbox"><h3>◉ OLAY GÜNLÜĞÜ</h3><div class="logs" id="logs" role="log" aria-live="polite"><div>Simülasyon başlatılmayı bekliyor.</div></div></div><div class="panel safetybox"><h3>▣ GÜVENLİ OYUN MODU</h3><p><strong>Bu bir kurgudur.</strong> Dosya silinmez, gerçek sistem taranmaz, ekran kartına müdahale edilmez, veri okunmaz veya sunucuya gönderilmez. ESC ile istediğin zaman çıkabilirsin.</p></div></section>
+    <footer class="footer"><span>SON PROTOKOL © KURGU OYUN / V1.0</span><span>GERÇEK SİSTEME DOKUNMAZ · ÇEVRİMDIŞI ÇALIŞIR</span></footer>
+  </main>
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+    <div class="intro-card" id="overlayCard"><div class="signal" id="overlaySignal">[ GİZLİ BAĞLANTI KURULDU ]</div><div class="spiral" aria-hidden="true"><span>0X</span></div><h2 id="overlayTitle">BİR OYUN OYNAMAK İSTER MİSİN?</h2><p class="lead" id="overlayText">Birisi sistemine dört şifre parçası bıraktı. Geri sayım başladığında onları bulup kilidi açmalısın.</p><div class="notice" id="overlayNotice"><b>GÜVENLİK NOTU:</b> Bu sadece sinematik bir bulmaca oyunudur. Gerçek virüs içermez, dosya silmez veya donanıma zarar vermez. Ses yalnızca oyunu başlatınca etkinleşir.</div><div class="options-row" id="optionRow"><label for="difficulty">ZORLUK</label><select id="difficulty"><option value="180">NORMAL · 03:00</option><option value="120">ZOR · 02:00</option><option value="90">KÂBUS · 01:30</option></select></div><button class="start" id="startBtn" type="button">OYUNU BAŞLAT ▶</button><button class="secondary" id="secondaryBtn" type="button" hidden>OYUNDAN ÇIK</button><p class="minor" id="overlayMinor">ESC: Çıkış · Ses düğmesi: anlatıcı ve efektler</p></div>
+  </div>
+  <script>
+    'use strict';
+    // Purely fictional, in-browser puzzle. No disk/network/device APIs are used.
+    const CASES = [
+      {code:'8537',clues:[
+        ['[ ÖNYÜKLEME KAYDI ]\nÖnceki döngüler: 02 → 04 → 06 → ??\nBirinci hane, boşluğa gelecek sayıdır.','Dizi ikişer artıyor.'],
+        ['[ BELLEK DÖKÜMÜ ]\nSon paket: 101₂\nİkinci hane için ikili (binary) sayıyı onluk tabana çevir.','101₂ = 4 + 0 + 1.'],
+        ['[ KAMERA YANSIMASI ]\nKayda giren kare: 9\nSilinen kare: 6\nGeriye kaç kare kaldı? Bu üçüncü hane.','9 − 6 işlemini yap.'],
+        ['[ SON ANAHTAR ]\nAsal sayılar: 2, 3, 5, ?\nDördüncü hane, dizinin sıradaki sayısıdır.','5’ten sonraki ilk asal sayı.']
+      ]},
+      {code:'2977',clues:[
+        ['[ ÖNYÜKLEME KAYDI ]\nDöngüler: 03 → 06 → 09 → ??\nBirinci hane, sonraki sayının yalnızca son rakamı.','Üçer art. 12’nin son rakamını kullan.'],
+        ['[ BELLEK DÖKÜMÜ ]\nKayıp paket: 1001₂\nİkinci hane, paketin onluk tabandaki değeri.','1001₂ = 8 + 1.'],
+        ['[ KAMERA YANSIMASI ]\n14 kayıt iki eşit klasöre bölündü.\nBir klasörde kaç kayıt var? Üçüncü hane.','14 ÷ 2 işlemi.'],
+        ['[ SON ANAHTAR ]\nKilidin notu: 2, 3, 5, ?\nDördüncü hane sıradaki asal sayıdır.','5’ten sonraki ilk asal sayı.']
+      ]},
+      {code:'0691',clues:[
+        ['[ ÖNYÜKLEME KAYDI ]\nDöngüler: 05 → 10 → 15 → ??\nBirinci hane, sonraki sayının son rakamı.','Beşer art. 20’nin son rakamı.'],
+        ['[ BELLEK DÖKÜMÜ ]\nGölge paket: 110₂\nİkinci hane, bunun onluk tabandaki değeridir.','110₂ = 4 + 2.'],
+        ['[ KAMERA YANSIMASI ]\nKare matrisin bir kenarı 3 birim.\nToplam hücre sayısı üçüncü hane.','3 × 3 işlemini yap.'],
+        ['[ SON ANAHTAR ]\nAsal dizisi: 2, 3, 5, 7, ?\nDördüncü hane, sıradaki sayının son rakamı.','7’den sonraki asal 11; son rakamı al.']
+      ]}
+    ];
+    const $ = id => document.getElementById(id);
+    const files = Array.from(document.querySelectorAll('.file'));
+    const state = {running:false,seconds:180,max:180,case:CASES[0],selected:-1,visited:new Set(),hints:new Set(),wrong:0,sound:true,endAt:0,interval:null,audioContext:null,drone:null,droneGain:null,firstWarning:false,lastTick:-1};
+    function log(message){const el=document.createElement('div');el.textContent=message;$('logs').prepend(el);while($('logs').children.length>8)$('logs').lastChild.remove();}
+    function overlay(title, body, signal, {mode='start', victory=false}={}){
+      $('overlay').classList.remove('hidden');$('overlayCard').classList.toggle('win',victory);
+      $('overlayTitle').textContent=title;$('overlayText').textContent=body;$('overlaySignal').textContent=signal;
+      const startMode=mode==='start';$('optionRow').hidden=!startMode;$('overlayNotice').hidden=!startMode;$('secondaryBtn').hidden=startMode;
+      $('startBtn').textContent=startMode?'OYUNU BAŞLAT ▶':'YENİDEN OYNA ↻';$('secondaryBtn').textContent='MENÜYE DÖN';
+      $('overlayMinor').textContent=startMode?'ESC: Çıkış · Ses düğmesi: anlatıcı ve efektler':'Bu bir simülasyondu. Gerçek dosyalar değiştirilmedi.';
+      $('startBtn').focus();
+    }
+    function setTime(){
+      const sec=Math.max(0,Math.ceil(state.seconds));$('timer').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+      $('timer').classList.toggle('danger',state.running&&sec<=30);const pct=Math.max(0,Math.round(state.seconds/state.max*100));$('progress').style.width=pct+'%';$('progress').setAttribute('aria-valuenow',pct);
+      $('integrity').textContent='%'+pct+' — '+(pct===0?'SİMÜLASYON SONU':pct<=20?'KRİTİK':pct<=50?'TEHLİKEDE':'KARANTİNADA');
+      $('statusText').textContent=state.running?(pct<=20?'KRİTİK DURUM':'SİMÜLASYON AKTİF'):'SİMÜLASYON HAZIR';
+    }
+    function audioInit(){
+      if(!state.sound)return;
+      try{
+        const AudioContext=window.AudioContext||window.webkitAudioContext;if(!AudioContext)return;
+        state.audioContext=state.audioContext||new AudioContext();state.audioContext.resume();
+        if(!state.drone){const ctx=state.audioContext;const osc=ctx.createOscillator();const filt=ctx.createBiquadFilter();const gain=ctx.createGain();osc.type='sawtooth';osc.frequency.value=52;filt.type='lowpass';filt.frequency.value=155;gain.gain.value=.012;osc.connect(filt);filt.connect(gain);gain.connect(ctx.destination);osc.start();state.drone=osc;state.droneGain=gain;}
+        state.droneGain.gain.setTargetAtTime(.012,state.audioContext.currentTime,.2);
+      }catch(_){/* Audio is optional */}
+    }
+    function stopAudio(){if(window.speechSynthesis)window.speechSynthesis.cancel();if(state.droneGain&&state.audioContext){state.droneGain.gain.setTargetAtTime(0,state.audioContext.currentTime,.06);}}
+    function tickSound(){if(!state.sound||!state.audioContext||state.audioContext.state!=='running')return;try{const ctx=state.audioContext;const osc=ctx.createOscillator();const gain=ctx.createGain();osc.type='sine';osc.frequency.setValueAtTime(620,ctx.currentTime);osc.frequency.exponentialRampToValueAtTime(220,ctx.currentTime+.065);gain.gain.setValueAtTime(.022,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.09);osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+.1)}catch(_){}}
+    function say(text){if(!state.sound||!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window))return;try{speechSynthesis.cancel();const msg=new SpeechSynthesisUtterance(text);msg.lang='tr-TR';msg.rate=.80;msg.pitch=.55;msg.volume=.76;const voices=speechSynthesis.getVoices();msg.voice=voices.find(v=>v.lang.toLowerCase().startsWith('tr'))||null;speechSynthesis.speak(msg)}catch(_){}}
+    function clearGame(){clearInterval(state.interval);state.interval=null;state.running=false;stopAudio();}
+    function initGame(){
+      clearGame();state.max=Number($('difficulty').value);state.seconds=state.max;state.case=CASES[Math.floor(Math.random()*CASES.length)];state.selected=-1;state.visited.clear();state.hints.clear();state.wrong=0;state.firstWarning=false;state.lastTick=-1;state.running=true;state.endAt=performance.now()+state.max*1000;
+      $('overlay').classList.add('hidden');$('codeInput').value='';$('fileTitle').textContent='> DOSYA SEÇİLMEDİ';$('fileContent').textContent='Dosyaları sırayla incele. Her dosya şifrenin bir hanesini saklar.';$('hintBtn').disabled=true;$('hintStatus').textContent='İpucu yardımı: −15 saniye';$('logs').replaceChildren();
+      files.forEach((file,i)=>{file.classList.remove('selected','visited');file.querySelector('.file-state').textContent='KİLİTLİ';file.querySelector('.file-mark').textContent=String(i+1).padStart(2,'0');});
+      setTime();audioInit();log('Bilinmeyen bir senaryo yüklendi. 4 ipucu tespit edildi.');log('Dikkat: Tüm dosyalar kurgusal.');
+      say('Oyun başladı. Dört dosya. Dört rakam. Tek bir çıkış. Zaman seni beklemeyecek.');
+      state.interval=setInterval(()=>{
+        if(!state.running)return;
+        state.seconds=Math.max(0,(state.endAt-performance.now())/1000);
+        setTime();const fullSeconds=Math.ceil(state.seconds);
+        if(fullSeconds!==state.lastTick){state.lastTick=fullSeconds;if(fullSeconds<=30&&fullSeconds>0)tickSound();}
+        if(state.seconds<=60&&!state.firstWarning){state.firstWarning=true;log('UYARI: 60 saniyeden az kaldı.');say('Son altmış saniye. Kararını ver.');}
+        if(state.seconds<=0)finish(false);
+      },120);
+      $('codeInput').focus();
+    }
+    function addPenalty(seconds){state.endAt-=seconds*1000;state.seconds=Math.max(0,(state.endAt-performance.now())/1000);setTime();if(state.seconds<=0)finish(false);}
+    function openFile(idx){if(!state.running)return;state.selected=idx;state.visited.add(idx);files.forEach((file,i)=>{file.classList.toggle('selected',i===idx);file.classList.toggle('visited',state.visited.has(i));file.querySelector('.file-state').textContent=state.visited.has(i)?'OKUNDU':'KİLİTLİ';});
+      $('fileTitle').textContent='> '+files[idx].querySelector('.file-name').textContent;
+      $('fileContent').textContent=state.case.clues[idx][0]+(state.hints.has(idx)?'\n\nYARDIM: '+state.case.clues[idx][1]:'');
+      $('hintBtn').disabled=state.hints.has(idx);$('hintStatus').textContent=state.hints.has(idx)?'İpucu kullanıldı':'İpucu yardımı: −15 saniye';log('Dosya okundu: '+files[idx].querySelector('.file-name').textContent);
+    }
+    function useHint(){const idx=state.selected;if(!state.running||idx<0||state.hints.has(idx))return;state.hints.add(idx);$('fileContent').textContent=state.case.clues[idx][0]+'\n\nYARDIM: '+state.case.clues[idx][1];$('hintBtn').disabled=true;$('hintStatus').textContent='İpucu kullanıldı';addPenalty(15);log('Yardım kullanıldı. −15 saniye.');}
+    function checkCode(){if(!state.running)return;const attempt=$('codeInput').value.replace(/\D/g,'').slice(0,4);if(attempt.length!==4){log('Dört hane girilmesi gerekiyor.');$('codeInput').focus();return;}
+      if(attempt===state.case.code){finish(true);return;}
+      state.wrong++;$('codeInput').value='';$('main').classList.remove('glitch');void $('main').offsetWidth;$('main').classList.add('glitch');log('YANLIŞ ŞİFRE. −12 saniye. Deneme: '+state.wrong);addPenalty(12);if(state.running&&state.wrong===1)say('Yanlış karar. Zaman azalıyor.');$('codeInput').focus();
+    }
+    function finish(won){if(!state.running)return;const remaining=Math.ceil(state.seconds);clearGame();setTime();
+      if(won){log('KASA AÇILDI. SİMÜLASYON TAMAMLANDI.');overlay('BU TURU KAZANDIN.','Şifre çözüldü. Kalan süre: '+String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0')+'. Yanlış deneme: '+state.wrong+'.','[ ERİŞİM SAĞLANDI ]',{mode:'end',victory:true});if(state.sound)say('Başardın. Bu sefer zamanı yendin.');}
+      else{files.forEach(file=>{file.querySelector('.file-state').textContent='SİMÜLE KAYIP';});log('Süre doldu. Kurgu dosyaların silinmesi canlandırıldı.');overlay('SÜRE DOLDU.','Kurgusal sistem kilitlendi. Ekrandaki kayıp yalnızca görsel bir efektti; bilgisayarındaki dosyalar güvende. Doğru şifre: '+state.case.code+'.','[ SENARYO SONA ERDİ ]',{mode:'end'});if(state.sound)say('Süren doldu. Bu sadece bir oyundu.');}
+    }
+    function returnMenu(){clearGame();state.seconds=Number($('difficulty').value);state.max=state.seconds;setTime();overlay('BİR OYUN OYNAMAK İSTER MİSİN?','Birisi sistemine dört şifre parçası bıraktı. Geri sayım başladığında onları bulup kilidi açmalısın.','[ GİZLİ BAĞLANTI KURULDU ]');}
+    files.forEach((file,idx)=>file.addEventListener('click',()=>openFile(idx)));
+    $('hintBtn').addEventListener('click',useHint);$('codeForm').addEventListener('submit',ev=>{ev.preventDefault();checkCode()});
+    $('codeInput').addEventListener('input',()=>{$('codeInput').value=$('codeInput').value.replace(/\D/g,'').slice(0,4)});
+    $('digits').addEventListener('click',ev=>{const btn=ev.target.closest('[data-key]');if(!btn||!state.running)return;const k=btn.dataset.key;const input=$('codeInput');if(k==='clear')input.value='';else if(k==='back')input.value=input.value.slice(0,-1);else if(input.value.length<4)input.value+=k;input.focus();});
+    $('startBtn').addEventListener('click',initGame);$('secondaryBtn').addEventListener('click',returnMenu);$('exitBtn').addEventListener('click',returnMenu);
+    $('audioBtn').addEventListener('click',()=>{state.sound=!state.sound;$('audioBtn').textContent=state.sound?'🔊 SES AÇIK':'🔇 SES KAPALI';$('audioBtn').setAttribute('aria-pressed',String(state.sound));if(state.sound&&state.running)audioInit();else stopAudio();});
+    window.addEventListener('keydown',ev=>{if(ev.key==='Escape'){ev.preventDefault();returnMenu();}});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden&&window.speechSynthesis)window.speechSynthesis.cancel()});
+    // Start screen is present in HTML, so the user must explicitly begin the game.
+    setTime();
+  </script>
+</body>
+</html>
